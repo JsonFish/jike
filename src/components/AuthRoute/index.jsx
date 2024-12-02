@@ -6,7 +6,7 @@
 import { getToken } from '@/utils/token'
 import { Navigate } from 'react-router-dom'
 
-function AuthRoute ({ children }) {
+export default function AuthRoute ({ children }) {
   const isToken = getToken()
   if (isToken) {
     return <>{children}</>
@@ -14,5 +14,3 @@ function AuthRoute ({ children }) {
     return <Navigate to="/login" replace />
   }
 }
-
-export { AuthRoute }

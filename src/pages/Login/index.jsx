@@ -1,8 +1,12 @@
 import React from "react";
 import { Card, Form, Input, Button, Checkbox } from "antd";
+import { useDispatch } from "react-redux";
+import { loginReq } from "@/store/modules/user";
+
 const Login = () => {
+  const dispatch = useDispatch();
   const onFinish = (values) => {
-    console.log("Success:", values);
+    dispatch(loginReq(values))
   };
   return (
     <div className="w-screen h-screen bg-zinc-700">
@@ -13,14 +17,14 @@ const Login = () => {
         <Form
           onFinish={onFinish}
           initialValues={{
-            phoneNumber: "13911111111",
-            password: "246810",
+            mobile: "13888888888",
+            code: "246810",
             remember: true,
           }}
         >
           <p className="text-center text-xl mb-2 text-gray-500">Json Fish</p>
           <Form.Item
-            name="phoneNumber"
+            name="mobile"
             rules={[
               {
                 pattern: /^1[3-9]\d{9}$/,
@@ -36,7 +40,7 @@ const Login = () => {
             <Input type="text" placeholder="phoneNumber" />
           </Form.Item>
           <Form.Item
-            name="password"
+            name="code"
             rules={[
               {
                 required: true,
