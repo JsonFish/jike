@@ -6,7 +6,7 @@ import { loginReq } from "@/store/modules/user";
 const Login = () => {
   const dispatch = useDispatch();
   const onFinish = (values) => {
-    dispatch(loginReq(values))
+    dispatch(loginReq(values));
   };
   return (
     <div className="w-screen h-screen bg-zinc-700">
