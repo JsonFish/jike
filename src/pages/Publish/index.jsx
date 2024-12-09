@@ -15,20 +15,16 @@ import { Link } from "react-router-dom";
 import "./index.css";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useEffect, useState } from "react";
-import { getChannelRequest, addArticleRequest } from "@/apis/article";
+import { useState } from "react";
+import { addArticleRequest } from "@/apis/article";
+import useChannel from "@/hooks/useChannel";
 const { Option } = Select;
 
 const Publish = () => {
   const [form] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
   // 获取频道列表
-  const [channleList, setChannelList] = useState([]);
-  useEffect(() => {
-    getChannelRequest().then((res) => {
-      setChannelList(res.data.channels);
-    });
-  }, []);
+  const channelList = useChannel();
   // 获取封面信息
   const [fileList, setFileList] = useState([]);
   const onChange = (value) => {
@@ -100,7 +96,7 @@ const Publish = () => {
             rules={[{ required: true, message: "请选择文章频道" }]}
           >
             <Select placeholder="请选择文章频道" allowClear>
-              {channleList.map((item) => (
+              {channelList.map((item) => (
                 <Option key={item.id} value={item.id}>
                   {item.name}
                 </Option>

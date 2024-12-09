@@ -16,3 +16,12 @@ export const addArticleRequest = (data) => {
     data,
   });
 };
+
+// 获取文章列表
+export const getArticleListRequest = (params) => {
+  return request({
+    method: "GET",
+    url: "/mp/articles",
+    params,
+  });
+};
