@@ -25,3 +25,11 @@ export const getArticleListRequest = (params) => {
     params,
   });
 };
+
+// 删除文章
+export const deleteArticleRequest = (id) => {
+  return request({
+    method: "DELETE",
+    url: `/mp/articles/${id}`,
+  });
+};
