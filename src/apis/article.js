@@ -33,3 +33,11 @@ export const deleteArticleRequest = (id) => {
     url: `/mp/articles/${id}`,
   });
 };
+
+// 获取文章详情
+export const getArticleDetailRequest = (id) => {
+  return request({
+    method: "GET",
+    url: `/mp/articles/${id}`,
+  });
+};

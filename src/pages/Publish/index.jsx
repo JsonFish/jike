@@ -15,13 +15,28 @@ import { Link } from "react-router-dom";
 import "./index.css";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useState } from "react";
-import { addArticleRequest } from "@/apis/article";
+import { useEffect, useState } from "react";
+import { addArticleRequest, getArticleDetailRequest } from "@/apis/article";
 import useChannel from "@/hooks/useChannel";
+import { useSearchParams } from "react-router-dom";
 const { Option } = Select;
 
 const Publish = () => {
+  const [searchParams] = useSearchParams();
+  const articleId = searchParams.get("id");
   const [form] = Form.useForm();
+  // 回填数据
+  useEffect(() => {
+    function getInfo() {
+      getArticleDetailRequest(articleId).then((res) => {
+        form.setFieldsValue(res.data);
+      });
+    }
+    if (articleId) {
+      getInfo();
+    }
+  }, [articleId, form]);
+
   const [messageApi, contextHolder] = message.useMessage();
   // 获取频道列表
   const channelList = useChannel();
@@ -39,7 +54,6 @@ const Publish = () => {
   const onFinish = (formValue) => {
     if (fileList.length !== imageType)
       return messageApi.warning("封面类型和图片数量不一致");
-
     const { title, content, channel_id } = formValue;
     const data = {
       title,
