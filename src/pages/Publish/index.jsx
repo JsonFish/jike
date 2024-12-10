@@ -29,7 +29,16 @@ const Publish = () => {
   useEffect(() => {
     function getInfo() {
       getArticleDetailRequest(articleId).then((res) => {
-        form.setFieldsValue(res.data);
+        form.setFieldsValue({
+          ...res.data,
+          type: res.data.cover.type,
+        });
+        setImageType(res.data.cover.type);
+        setFileList(
+          res.data.cover.images.map((url) => {
+            return { url };
+          })
+        );
       });
     }
     if (articleId) {
@@ -135,6 +144,7 @@ const Publish = () => {
                 className="avatar-uploader"
                 showUploadList
                 onChange={onChange}
+                fileList={fileList}
               >
                 <div style={{ marginTop: 8 }}>
                   <PlusOutlined />
