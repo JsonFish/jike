@@ -16,7 +16,11 @@ import "./index.css";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useEffect, useState } from "react";
-import { addArticleRequest, getArticleDetailRequest } from "@/apis/article";
+import {
+  addArticleRequest,
+  getArticleDetailRequest,
+  updateArticleRequest,
+} from "@/apis/article";
 import useChannel from "@/hooks/useChannel";
 import { useSearchParams } from "react-router-dom";
 const { Option } = Select;
@@ -27,7 +31,7 @@ const Publish = () => {
   const [form] = Form.useForm();
   // 回填数据
   useEffect(() => {
-    function getInfo() {
+    function getArticleInfo() {
       getArticleDetailRequest(articleId).then((res) => {
         form.setFieldsValue({
           ...res.data,
@@ -42,7 +46,7 @@ const Publish = () => {
       });
     }
     if (articleId) {
-      getInfo();
+      getArticleInfo();
     }
   }, [articleId, form]);
 
@@ -70,20 +74,40 @@ const Publish = () => {
       channel_id,
       cover: {
         type: imageType,
-        image: fileList.map((item) => item.response.data.url),
+        image: fileList.map((item) => {
+          if (item.response) {
+            return item.response.data.url;
+          } else {
+            return item.url;
+          }
+        }),
       },
     };
-    addArticleRequest(data).then((res) => {
-      if (res.message === "OK") {
-        messageApi.success("文章发布成功");
-        form.resetFields();
-        setFileList([]);
-        setImageType(0);
-      } else {
-        messageApi.error(res.message);
-      }
-      // 发布成功后清空表单
-    });
+    if (articleId) {
+      updateArticleRequest(articleId, data).then((res) => {
+        if (res.message === "OK") {
+          messageApi.success("文章更新成功");
+          form.resetFields();
+          setFileList([]);
+          setImageType(0);
+        } else {
+          messageApi.error(res.message);
+        }
+        // 发布成功后清空表单
+      });
+    } else {
+      addArticleRequest(data).then((res) => {
+        if (res.message === "OK") {
+          messageApi.success("文章发布成功");
+          form.resetFields();
+          setFileList([]);
+          setImageType(0);
+        } else {
+          messageApi.error(res.message);
+        }
+        // 发布成功后清空表单
+      });
+    }
   };
 
   return (
@@ -95,7 +119,9 @@ const Publish = () => {
             <Breadcrumb.Item>
               <Link to="/home">首页</Link>
             </Breadcrumb.Item>
-            <Breadcrumb.Item>发布文章</Breadcrumb.Item>
+            <Breadcrumb.Item>
+              {articleId ? "编辑文章" : "发布文章"}
+            </Breadcrumb.Item>
           </Breadcrumb>
         }
       >

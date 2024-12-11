@@ -132,8 +132,6 @@ const Article = () => {
   }, [queryParams]);
 
   const onFinish = (formValue) => {
-    console.log(formValue);
-
     // 讲收集到的数据放到请求参数当中
     setQueryParams({
       ...queryParams,
@@ -169,10 +167,10 @@ const Article = () => {
         }
         style={{ marginBottom: 20 }}
       >
-        <Form initialValues={{ status: null, date: [] }} onFinish={onFinish}>
+        <Form initialValues={{ status: "", date: [] }} onFinish={onFinish}>
           <Form.Item label="状态" name="status">
             <Radio.Group>
-              <Radio value={null}>全部</Radio>
+              <Radio value={""}>全部</Radio>
               <Radio value={1}>待审核</Radio>
               <Radio value={2}>审核通过</Radio>
             </Radio.Group>

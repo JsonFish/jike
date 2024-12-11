@@ -41,3 +41,12 @@ export const getArticleDetailRequest = (id) => {
     url: `/mp/articles/${id}`,
   });
 };
+
+// 更新文章
+export const updateArticleRequest = (id, data) => {
+  return request({
+    method: "PUT",
+    url: `/mp/articles/${id}?draft=false`,
+    data,
+  });
+};
